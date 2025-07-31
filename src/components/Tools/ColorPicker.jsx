@@ -12,7 +12,7 @@ const ColorPicker = ({ selectedColor, changeColor }) => (
         className={`w-6 h-6 rounded-full border-2 ${
           selectedColor === color
             ? "border-black dark:border-white"
-            : "border-transparent"
+            : "border-black"
         }`}
         style={{ backgroundColor: color }}
         onClick={() => changeColor(color)}

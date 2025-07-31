@@ -1,10 +1,11 @@
 import React from "react";
 import WhiteBoard from "./components/WhiteBoard";
-// import FloatingBtn from './components/FloatingBtn'
 const App = () => {
   return (
     <>
-      <WhiteBoard />
+      <div className="min-h-screen bg-white dark:bg-stone-900 text-black dark:text-white">
+        <WhiteBoard />
+      </div>
     </>
   );
 };
