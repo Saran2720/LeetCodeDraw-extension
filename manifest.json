@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "C-Draw Extension",
+  "version": "1.0",
+  "description": "Injects a draggable floating button on any website",
+  "permissions": ["scripting", "activeTab"],
+  "action": {
+    "default_icon": "icon.png"
+  },
+  "host_permissions": [
+    "https://leetcode.com/*",
+    "https://*.geeksforgeeks.org/*",
+    "https://www.hackerrank.com/*",
+    "https://www.hackerearth.com/*",
+    "https://atcoder.jp/*",
+    "https://codeforces.com/*",
+    "https://www.codechef.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://leetcode.com/*",
+        "https://*.geeksforgeeks.org/*",
+        "https://www.hackerrank.com/*",
+        "https://www.hackerearth.com/*",
+        "https://atcoder.jp/*",
+        "https://codeforces.com/*",
+        "https://www.codechef.com/*"
+      ],
+      "js": ["assets/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/main.js", "assets/index.css"],
+      "matches": ["https://*/*"]
+    }
+  ],
+  "icons": {
+    "48": "icon.png"
+  }
+}
