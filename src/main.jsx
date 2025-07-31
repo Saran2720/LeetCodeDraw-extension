@@ -1,22 +1,13 @@
 // src/main.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./app.jsx";
+import App from "./App.jsx";
 import "./index.css";
 
-const rootEl = document.getElementById("flating-btn-wrapper");
 
-if (rootEl) {
-  const root = ReactDOM.createRoot(rootEl);
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
+
+
+const targetRoot = document.getElementById("canvas-root") || document.getElementById("root");
+if (targetRoot) {
+  ReactDOM.createRoot(targetRoot).render(<App />);
 }
-
-// ReactDOM.createRoot(document.getElementById("root")).render(
-//   <React.StrictMode>    
-//     <App />
-//   </React.StrictMode>
-// );
