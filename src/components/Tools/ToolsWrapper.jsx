@@ -3,13 +3,11 @@ import ToolButton from "./ToolButton";
 import { useState } from "react";
 import { FaEraser, FaPen, FaTrash, FaRedo, FaUndo } from "react-icons/fa";
 import PenTool from "./PenTool";
-import ToggleTheme from "./ToggleTheme";
 
 const ToolsWrapper = () => {
   const [showpenTool, setShowPenTool] = useState(false);
   return (
-    <div className="fixed top-4 right-4 flex flex-col items-center gap-3 p-2 bd-white dark:bg-stone-800 dark-text-white rounded-xl shadow-lg z-50">
-      <ToggleTheme />
+    <div className="fixed top-10 right-4 flex flex-col items-center gap-3 p-2 bd-white dark:bg-stone-800 dark-text-white rounded-xl shadow-lg z-50">
       <ToolButton
         icon={<FaPen />}
         onclick={() => setShowPenTool(!showpenTool)}

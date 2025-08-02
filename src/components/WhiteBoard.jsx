@@ -1,12 +1,14 @@
 import React from "react";
 import ToolsWrapper from "./Tools/ToolsWrapper";
-
+import Canvas from "./Canvas";
+import { DrawingProvider } from "../ContextAPI/DrawingContext";
 
 const WhiteBoard = () => {
   return (
-    <>
-    <ToolsWrapper/>
-    </>
+    <DrawingProvider>
+      <Canvas />
+      <ToolsWrapper />
+    </DrawingProvider>
   );
 };
 

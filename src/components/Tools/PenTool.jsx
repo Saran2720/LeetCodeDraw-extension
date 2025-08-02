@@ -2,11 +2,13 @@ import React, { useEffect } from "react";
 import ColorPicker from "./ColorPicker";
 import { useState, useRef } from "react";
 import SizeSlider from "./SizeSlider";
+import { useDrawing } from "../../ContextAPI/DrawingContext.jsx";
 
 const PenTool = ({ onClose }) => {
   const pickerRef = useRef();
-  const [selectedColor, setSelectedColor] = useState("black");
-  const [lineWidth, setLineWidth] = useState(2);
+
+  const { selectedColor, setSelectedColor, lineWidth, setLineWidth } =
+    useDrawing();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -24,7 +26,7 @@ const PenTool = ({ onClose }) => {
 
   return (
     <div
-      className="p-4 bg-white dark:bg-stone-800 rounded-lg shadow-md absolute right-14 top-0 z-50"
+      className="p-4 dark:bg-stone-800 rounded-lg shadow-md absolute right-14 top-0 z-50"
       ref={pickerRef}
       style={{ width: "200px" }}
     >
