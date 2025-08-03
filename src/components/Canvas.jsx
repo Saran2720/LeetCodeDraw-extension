@@ -5,7 +5,7 @@ import { useDrawing } from "../ContextAPI/DrawingContext.jsx";
 const Canvas = () => {
   const canvasRef = useRef(null);
   const fabricCanvasRef = useRef(null);
-  const { selectedColor, lineWidth } = useDrawing();
+  const { selectedColor, lineWidth, setCanvas } = useDrawing();
 
   useEffect(() => {
     const fabricCanvas = new fabric.Canvas(canvasRef.current, {
@@ -18,6 +18,10 @@ const Canvas = () => {
     fabricCanvas.renderAll();
 
     fabricCanvasRef.current = fabricCanvas;
+
+    //save all the drawing state to stack
+    setCanvas(fabricCanvas);// implemetation in context API
+
     return () => {
       fabricCanvas.dispose();
     };
