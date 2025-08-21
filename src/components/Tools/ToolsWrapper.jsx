@@ -7,20 +7,31 @@ import { useDrawing } from "../../ContextAPI/DrawingContext";
 
 const ToolsWrapper = () => {
   const [showpenTool, setShowPenTool] = useState(false);
-  const {undo, redo, clear}=useDrawing();
+  const { undo, redo, clear, setTool } = useDrawing();
   return (
     <div className="fixed top-10 right-4 flex flex-col items-center gap-3 p-2 bd-white dark:bg-stone-800 dark-text-white rounded-xl shadow-lg z-50">
       <ToolButton
         icon={<FaPen />}
-        onclick={() => setShowPenTool(!showpenTool)}
+        onClick={() => {
+          setShowPenTool(true);
+          setTool("pencil");
+          // console.log("pen")
+        }}
       />
       {showpenTool && <PenTool onClose={() => setShowPenTool(false)} />}
 
-      <ToolButton icon={<FaEraser />} />
+      <ToolButton
+        icon={<FaEraser />}
+        onClick={() => {
+          setTool("eraser");
+          setShowPenTool(false);
+          // console.log("eraser");
+        }}
+      />
       <div className="border-t w-full border-gray-300 dark:border-gray-600 my-1"></div>
-      <ToolButton icon={<FaUndo />} onclick={undo} />
-      <ToolButton icon={<FaRedo />} onclick={redo} />
-      <ToolButton icon={<FaTrash />} onclick={clear} />
+      <ToolButton icon={<FaUndo />} onClick={undo} />
+      <ToolButton icon={<FaRedo />} onClick={redo} />
+      <ToolButton icon={<FaTrash />} onClick={clear} />
     </div>
   );
 };
