@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "C-Draw Extension",
+  "name": "LeetCode draw",
   "version": "1.0",
   "description": "Injects a draggable floating button on any website",
   "permissions": ["scripting", "activeTab"],
@@ -8,24 +8,12 @@
     "default_icon": "icon.png"
   },
   "host_permissions": [
-    "https://leetcode.com/*",
-    "https://*.geeksforgeeks.org/*",
-    "https://www.hackerrank.com/*",
-    "https://www.hackerearth.com/*",
-    "https://atcoder.jp/*",
-    "https://codeforces.com/*",
-    "https://www.codechef.com/*"
+    "https://leetcode.com/*"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://leetcode.com/*",
-        "https://*.geeksforgeeks.org/*",
-        "https://www.hackerrank.com/*",
-        "https://www.hackerearth.com/*",
-        "https://atcoder.jp/*",
-        "https://codeforces.com/*",
-        "https://www.codechef.com/*"
+        "https://leetcode.com/*"
       ],
       "js": ["assets/content.js"],
       "run_at": "document_idle"

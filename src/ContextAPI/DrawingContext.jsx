@@ -18,6 +18,24 @@ export const DrawingProvider = ({ children }) => {
   const drawingRef = useRef(false);
   const currentStrokeRef = useRef(null);
 
+  //loading drawing strokes from the localStorge
+  useEffect(() => {
+    const saved = localStorage.getItem("strokes");
+    if (saved) {
+      try {
+        strokesRef.current = JSON.parse(saved);
+        redraw();
+      } catch (e) {
+        console.error("failed to load from the local Storage");
+      }
+    }
+  }, []);
+
+  //storing in localStorage
+  const saveStrokes = () => {
+    localStorage.setItem("strokes", JSON.stringify(strokesRef.current));
+  };
+
   // Draw only the last segment for smooth incremental painting
   const drawStrokeSegment = (stroke, startIndex) => {
     const canvas = canvasRef.current;
@@ -60,26 +78,16 @@ export const DrawingProvider = ({ children }) => {
     return { x: clientX - rect.left, y: clientY - rect.top };
   };
 
-  // const beginStroke = (pt) => {
-  //   drawingRef.current = true;
-  //   currentStrokeRef.current = {
-  //     id: crypto.randomUUID ? crypto.randomUUID() : Date.now() + Math.random(),
-  //     tool, // use the selected tool (pencil or eraser)
-  //     color: selectedColor,
-  //     lineWidth: tool === "eraser" ? 20 : lineWidth, // bigger eraser size
-  //     points: [pt],
-  //   };
-  // };
-const beginStroke = (pt) => {
-  drawingRef.current = true;
-  currentStrokeRef.current = {
-    id: crypto.randomUUID ? crypto.randomUUID() : Date.now() + Math.random(),
-    tool,                          // "pencil" or "eraser"
-    color: selectedColor,          // ignored for eraser because of composite op
-    lineWidth: tool === "eraser" ? 20 : lineWidth,
-    points: [pt],
+  const beginStroke = (pt) => {
+    drawingRef.current = true;
+    currentStrokeRef.current = {
+      id: crypto.randomUUID ? crypto.randomUUID() : Date.now() + Math.random(),
+      tool, // "pencil" or "eraser"
+      color: selectedColor, // ignored for eraser because of composite op
+      lineWidth: tool === "eraser" ? 20 : lineWidth,
+      points: [pt],
+    };
   };
-};
   const extendStroke = (pt) => {
     const s = currentStrokeRef.current;
     if (!s) return;
@@ -99,7 +107,8 @@ const beginStroke = (pt) => {
     if (!s || s.points.length < 2) return; // ignore taps
     strokesRef.current = [...strokesRef.current, s];
     historyRef.current = [...historyRef.current, { type: "stroke", stroke: s }];
-    redoRef.current = []; // invalidate redo after new action
+    redoRef.current = []; //empty redo after new detection
+    saveStrokes();
   };
 
   const handlePointerDown = (e) => {
@@ -163,37 +172,36 @@ const beginStroke = (pt) => {
 
   //   ctx.globalCompositeOperation = prevOp;
   // };
-const drawStroke = (ctx, stroke) => {
-  const isEraser = stroke.tool === "eraser";
-  const prevOp = ctx.globalCompositeOperation;
+  const drawStroke = (ctx, stroke) => {
+    const isEraser = stroke.tool === "eraser";
+    const prevOp = ctx.globalCompositeOperation;
 
-  ctx.globalCompositeOperation = isEraser ? "destination-out" : "source-over";
-  ctx.lineJoin = "round";
-  ctx.lineCap = "round";
-  ctx.lineWidth = stroke.lineWidth;
-  if (!isEraser) ctx.strokeStyle = stroke.color;
+    ctx.globalCompositeOperation = isEraser ? "destination-out" : "source-over";
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.lineWidth = stroke.lineWidth;
+    if (!isEraser) ctx.strokeStyle = stroke.color;
 
-  const pts = stroke.points;
+    const pts = stroke.points;
 
-  if (pts.length === 1) {
-    // dot
-    ctx.beginPath();
-    ctx.arc(pts[0].x, pts[0].y, stroke.lineWidth / 2, 0, Math.PI * 2);
-    if (!isEraser) ctx.fillStyle = stroke.color;
-    ctx.fill();
-  } else {
-    // polyline
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, pts[0].y);
-    for (let i = 1; i < pts.length; i++) {
-      ctx.lineTo(pts[i].x, pts[i].y);
+    if (pts.length === 1) {
+      // dot
+      ctx.beginPath();
+      ctx.arc(pts[0].x, pts[0].y, stroke.lineWidth / 2, 0, Math.PI * 2);
+      if (!isEraser) ctx.fillStyle = stroke.color;
+      ctx.fill();
+    } else {
+      // polyline
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) {
+        ctx.lineTo(pts[i].x, pts[i].y);
+      }
+      ctx.stroke();
     }
-    ctx.stroke();
-  }
 
-  ctx.globalCompositeOperation = prevOp;
-};
-
+    ctx.globalCompositeOperation = prevOp;
+  };
 
   // Undo / Redo / clear
   function undo() {
@@ -212,6 +220,7 @@ const drawStroke = (ctx, stroke) => {
       strokesRef.current = lastAction.prev;
     }
     redraw();
+    saveStrokes();
   }
 
   function redo() {
@@ -227,6 +236,8 @@ const drawStroke = (ctx, stroke) => {
       strokesRef.current = [];
     }
     redraw();
+    saveStrokes();
+
   }
 
   function clear() {
@@ -236,6 +247,8 @@ const drawStroke = (ctx, stroke) => {
     historyRef.current = [...historyRef.current, { type: "clear", prev }];
     redoRef.current = [];
     redraw();
+    saveStrokes();
+
   }
 
   // Keyboard shortcuts

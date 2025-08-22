@@ -12,7 +12,7 @@
   button.style.height = "50px";
   button.style.padding = "2px";
   button.style.borderRadius = "50%";
-  button.style.background = "#519cebff";
+  button.style.background = "linear-gradient(to top, #029e9eff 0%, #330867 100%)";
   button.style.display = "flex";
   button.style.justifyContent = "center";
   button.style.alignItems = "center";
@@ -51,7 +51,7 @@
   button.addEventListener("click", () => {
     let container = document.getElementById("canvas-root");
     if (!container) {
-      console.log("Creating canvas-root div");
+      // console.log("Creating canvas-root div");
       container = document.createElement("div");
       container.id = "canvas-root";
       container.style.position = "fixed";
@@ -60,10 +60,12 @@
       container.style.width = "100vw";
       container.style.height = "100vh";
       container.style.zIndex = "99998";
-      container.style.background = "white";
+      container.style.background = "rgba(30, 30, 30, 1)";
+      container.style.opacity=1;
       container.style.display = "block";
       document.body.appendChild(container);
 
+      //injecting react files as build
       const script = document.createElement("script");
       script.src = chrome.runtime.getURL("assets/main.js"); // correct Vite build path
       script.type = "module";
