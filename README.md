@@ -1,3 +1,5 @@
+<img width="1728" height="842" alt="Screenshot 2025-09-28 152256" src="https://github.com/user-attachments/assets/262931eb-6166-42d5-85cc-a5782a6e9d23" />
+
 A Chrome Extension that injects a draggable floating button on coding platform LeetCode. 
 Clicking the button opens a drawing canvas (whiteboard) where you can sketch, take notes, and brainstorm while solving problems.
 
@@ -36,3 +38,4 @@ Click Load unpacked
 Select the build folder
 
 ✅ The extension is now ready to use!
+
